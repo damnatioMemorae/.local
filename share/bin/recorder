@@ -37,14 +37,8 @@ function print_error
 EOF
 }
 
-function recorder
-{
-        wf-recorder -D -r 120 -f "$save_file" -g "$1"
-        # gpu-screen-recorder -f 120 -bm qp -fm cfr -q ultra -o "$save_file" -w region -region "$1"
-}
-
-if pgrep -x "wf-recorder" >/dev/null; then
-        pkill --signal SIGTERM -x wf-recorder
+if pgrep -x "gpu-screen-recorder" >/dev/null; then
+        pkill --signal SIGTERM -x gpu-screen-recorder
         # if [ -f "${save_dir}/${save_file}" ]; then
         # notify-send -t 2000 -a "t1" -i "${save_dir}/${save_file}" "saved in ${save_dir}"
         # fi
@@ -52,10 +46,13 @@ else
         # notify-send -t 2000 -u critical -a "t1" "Recording"
         case $1 in
                 s) # record whole screen
-                        recorder
+                        # wf-recorder --audio -D -r 120 -f "$save_file" -g "$1"
+                        # gpu-screen-recorder -f 120 -bm qp -fm cfr -q ultra -w screen
+                        gpu-screen-recorder -w screen -f 120 -bm qp -fm cfr -q ultra -a default_output -o "$save_file"
                         ;;
                 sa) # record screen area
-                        recorder "$(slurp)"
+                        # wf-recorder --audio -D -r 120 -f "$save_file" -g "$1"
+                        gpu-screen-recorder -f 120 -bm qp -fm cfr -q ultra -w region -region $(slurp -f "%wx%h+%x+%y") -o "$save_file"
                         ;;
         esac
 fi
