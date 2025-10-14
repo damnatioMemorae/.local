@@ -25,7 +25,7 @@ case "${1}" in
 esac
 
 [ "$hypr_border" -eq 0 ]
-r_override="window {height: 18em; width: 20em; border: ${hypr_width}px; border-radius: 0;} element {border-radius: 0;}"
+r_override="window {height: 18em; width: 20em; y-offset: 0em; border: ${hypr_width}px; border-radius: 0;} element {border-radius: 0;}"
 r_scale="configuration {font: \"Monocraft ${rofiScale}\";}"
 i_override="$(gsettings get org.gnome.desktop.interface icon-theme | sed "s/'//g")"
 i_override="configuration {icon-theme: \"${i_override}\";}"
