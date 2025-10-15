@@ -1,5 +1,5 @@
 #!/usr/bin/bash
 
-if pgrep -x "gpu-screen-recorder" >/dev/null; then
+if pgrep -x "wf-recorder" >/dev/null; then
         echo "🬀"
 fi
