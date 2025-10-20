@@ -23,19 +23,27 @@ if [ "$selectedOption" = "" ]; then
         exit
 fi
 
-if [ "$selectedOption" = "Disable" ]; then
-        hyprshade off # Disable the shader
-elif [ "$selectedOption" = "Enable" ]; then
-        # Enable the most recent shader (the last one from the list)
-        last_shader=$(tail -n 1 "$confDir/hypr/shaders/.last_shader.txt")
-        hyprshade on "$last_shader"
-else
-        # Enable the selected shader
-        hyprshade on "$selectedOption"
+case $1 in
+        list)
+                if [ "$selectedOption" = "Disable" ]; then
+                        hyprshade off
+                elif [ "$selectedOption" = "Enable" ]; then
+                        last_shader=$(tail -n 1 "$confDir/hypr/shaders/.last_shader.txt")
+                        hyprshade on "$last_shader"
+                else
+                        hyprshade on "$selectedOption"
 
-        # Update the last used shader (for future "Toggle" option)
-        echo "$selectedOption" >"$confDir/hypr/shaders/.last_shader.txt"
-fi
+                        echo "$selectedOption" >"$confDir/hypr/shaders/.last_shader.txt"
+                fi
+                ;;
+        night)
+                if pgre -x "hyprshade" >/dev/null; then
+                        pkill --signal SIGTERM -x hyprshade
+                else
+                        hyprshade "$(echo -e "$shaderList" | grep 'dark')"
+                fi
+                ;;
+esac
 
 shaderStatus=$(hyprshade current)
 notify-send "Shader: $shaderStatus"
