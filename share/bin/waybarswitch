@@ -1,13 +1,12 @@
 #!/usr/bin/env sh
 
 wayConf="$HOME/.config/waybar"
-swayBar="$HOME/.config/waybar/sway/"
 
 if pgrep -x "waybar" >/dev/null; then
         pkill -x "waybar"
 else
         case "$1" in
                 t) waybar -c "${wayConf}/top.jsonc" -s "${wayConf}/top.css" ;;
-                s) waybar -c "${swayBar}/bottom.jsonc" -s "${swayBar}/side.css" ;;
+                s) waybar -c "${wayConf}/side.jsonc" -s "${wayConf}/top.css" ;;
         esac
 fi
