@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+color=$(hyprpicker -a -l)
+
+notify-send "$color"
+
+echo "$color" | wl-copy

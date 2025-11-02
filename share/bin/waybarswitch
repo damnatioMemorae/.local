@@ -1,0 +1,12 @@
+#!/usr/bin/bash
+
+wayConf="$HOME/.config/waybar"
+
+if pgrep -x "waybar" >/dev/null; then
+        pkill -x "waybar"
+else
+        case "$1" in
+                t) waybar -c "${wayConf}/top.jsonc" -s "${wayConf}/top.css" ;;
+                s) waybar -c "${wayConf}/side.jsonc" -s "${wayConf}/top.css" ;;
+        esac
+fi

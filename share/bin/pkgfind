@@ -1,0 +1,15 @@
+#!/usr/bin/bash
+
+scrDir=$(dirname "$(realpath "$0")")
+source "$scrDir"/globalcontrol
+get_aurhlpr
+roconf="${confDir}/rofi/clipboard.rasi"
+
+[[ ${rofiScale} =~ ^[0-9]+$ ]] || rofiScale=10
+r_scale="configuration {font: \"Monocraft ${rofiScale}\";}"
+wind_border=$((hypr_border * 3 / 2))
+elem_border=$([ "$hypr_border" -eq 0 ] && echo "5" || ech"o $hypr_bord"er)
+
+selectedPkg=$($aurhlpr -Slq | sort | rofi -dmenu -theme-str 'entry { placeholder: " Search";}' -theme-str "${r_scale}" -theme-str "${r_override}" -config "${roconf}")
+
+$scrDir/rofipass rofi -show drun -run "gksudo -A {pacman -S $selectedPkg}"

@@ -1,0 +1,58 @@
+#!/usr/bin/bash
+
+# Restores the shader after screenhot has been taken
+restore_shader()
+{
+        if [ -n "$shader" ]; then
+                hyprshade on "$shader"
+        fi
+}
+
+# Saves the current shader and turns it off
+save_shader()
+{
+        shader=$(hyprshade current)
+        hyprshade off
+        trap restore_shader EXIT
+}
+
+save_shader # Saving the current shader
+
+if [ -z "$XDG_VIDEO_DIR" ]; then
+        XDG_VIDEOS_DIR="$HOME/Videos"
+fi
+
+scrDir=$(dirname "$(realpath "$0")")
+source "$scrDir"/globalcontrol
+save_dir="${2:-$XDG_VIDEOS_DIR}"
+save_file="$save_dir"/"$(date +'Video-%y-%m-%d_%H-%M-%S.mp4')"
+
+function print_error
+{
+        cat <<"EOF"
+    ./recorder <action>
+    ...valid actions are...
+        s  : record whole screen
+        sa : record screen area
+EOF
+}
+
+if pgrep -x "wf-recorder" >/dev/null; then
+        pkill --signal SIGTERM -x wf-recorder
+        # if [ -f "${save_dir}/${save_file}" ]; then
+        # notify-send -t 2000 -a "t1" -i "${save_dir}/${save_file}" "saved in ${save_dir}"
+        # fi
+else
+        # notify-send -t 2000 -u critical -a "t1" "Recording"
+        case $1 in
+                s) # record whole screen
+                        wf-recorder --audio="alsa_output.pci-0000_05_00.6.analog-stereo.monitor" -D -r 120 -f "$save_file" -g "$1"
+                        # gpu-screen-recorder -f 120 -bm qp -fm cfr -q ultra -w screen
+                        # gpu-screen-recorder -w screen -f 120 -bm qp -fm cfr -q ultra -a default_output -o "$save_file"
+                        ;;
+                sa) # record screen area
+                        wf-recorder --audio="alsa_output.pci-0000_05_00.6.analog-stereo.monitor" -D -r 120 -f "$save_file" -g "$1"
+                        # gpu-screen-recorder -f 120 -bm qp -fm cfr -q ultra -w region -region $(slurp -f "%wx%h+%x+%y") -o "$save_file"
+                        ;;
+        esac
+fi
