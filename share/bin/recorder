@@ -1,6 +1,5 @@
 #!/usr/bin/bash
 
-# Restores the shader after screenhot has been taken
 restore_shader()
 {
         if [ -n "$shader" ]; then
@@ -8,7 +7,6 @@ restore_shader()
         fi
 }
 
-# Saves the current shader and turns it off
 save_shader()
 {
         shader=$(hyprshade current)
@@ -16,7 +14,7 @@ save_shader()
         trap restore_shader EXIT
 }
 
-save_shader # Saving the current shader
+save_shader
 
 if [ -z "$XDG_VIDEO_DIR" ]; then
         XDG_VIDEOS_DIR="$HOME/Videos"
@@ -56,3 +54,5 @@ else
                         ;;
         esac
 fi
+
+restore_shader
