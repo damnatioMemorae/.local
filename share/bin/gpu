@@ -9,17 +9,36 @@ r_scale="configuration {font: \"Monocraft ${rofiScale}\";}"
 r_override="window {height: 12em; width: 14em; y-offset: 0em;border: ${hypr_width}px; border-radius: 0;} element {border-radius: 0;}"
 
 profileList=$(lact cli profile list)
-selectedProfile=$(echo -e "$profileList" | rofi -p "GPU" -dmenu -theme-str "$r_override" -theme-str "$r_scale" -config "$rofiConf")
+case "$1" in
+        r)
+                selectedProfile=$(echo -e "$profileList" | rofi -p "GPU" -dmenu -theme-str "$r_override" -theme-str "$r_scale" -config "$rofiConf")
 
-if [ "$selectedProfile" = "" ]; then
-        exit
-fi
+                if [ "$selectedProfile" = "" ]; then
+                        exit
+                fi
 
-if [ "$selectedProfile" = "i" ]; then
-        notify-send "GPU profile: $(lact cli profile get)"
-        exit
-fi
+                if [ "$selectedProfile" = "i" ]; then
+                        notify-send "GPU profile: $(lact cli profile get)"
+                        exit
+                fi
 
-lact cli profile set "$selectedProfile"
-profileCurrent=$(lact cli profile get)
-notify-send "GPU profile: $profileCurrent"
+                lact cli profile set "$selectedProfile"
+                profileCurrent=$(lact cli profile get)
+                notify-send "GPU profile: $profileCurrent"
+                ;;
+        d)
+                lact cli profile set Default
+                profileCurrent=$(lact cli profile get)
+                notify-send "GPU profile: $profileCurrent"
+                ;;
+        o)
+                lact cli profile set Overclock
+                profileCurrent=$(lact cli profile get)
+                notify-send "GPU profile: $profileCurrent"
+                ;;
+        l)
+                lact cli profile set Low
+                profileCurrent=$(lact cli profile get)
+                notify-send "GPU profile: $profileCurrent"
+                ;;
+esac

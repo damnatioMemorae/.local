@@ -49,7 +49,15 @@ else
                         # gpu-screen-recorder -w screen -f 120 -bm qp -fm cfr -q ultra -a default_output -o "$save_file"
                         ;;
                 sa) # record screen area
-                        wf-recorder --audio="alsa_output.pci-0000_05_00.6.analog-stereo.monitor" -D -r 120 -f "$save_file" -g "$1"
+                        wf-recorder --audio="alsa_output.pci-0000_05_00.6.analog-stereo.monitor" -D -r 120 -f "$save_file" -g "$(slurp)"
+                        # gpu-screen-recorder -f 120 -bm qp -fm cfr -q ultra -w region -region $(slurp -f "%wx%h+%x+%y") -o "$save_file"
+                        ;;
+                m) # record whole area (no audio)
+                        wf-recorder -D -r 120 -f "$save_file" -g "$1"
+                        # gpu-screen-recorder -f 120 -bm qp -fm cfr -q ultra -w region -region $(slurp -f "%wx%h+%x+%y") -o "$save_file"
+                        ;;
+                ma) # record screen area (no audio)
+                        wf-recorder -D -r 120 -f "$save_file" -g "$(slurp)"
                         # gpu-screen-recorder -f 120 -bm qp -fm cfr -q ultra -w region -region $(slurp -f "%wx%h+%x+%y") -o "$save_file"
                         ;;
         esac
