@@ -1,7 +1,14 @@
 #!/usr/bin/bash
 
+scrDir=$(dirname "$(realpath "$0")")
+source "$scrDir"/globalcontrol
+
+save_shader
+
 color=$(hyprpicker -a -l)
 
 notify-send "$color"
 
 echo "$color" | wl-copy
+
+restore_shader

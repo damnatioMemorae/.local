@@ -1,0 +1,15 @@
+#!/usr/bin/bash
+
+scrDir="$(dirname "$(realpath "$0")")"
+source "${scrDir}"/globalcontrol
+
+if pkg_installed hyprland; then
+        currentShader=$(hyprshade current)
+        if [[ $currentShader == "dark" ]]; then
+                hyprshade off
+        else
+                hyprshade on dark
+        fi
+else
+        exit 0
+fi

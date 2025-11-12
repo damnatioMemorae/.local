@@ -8,6 +8,20 @@ export thmbDir="${cacheDir}/thumbs"
 export dcolDir="${cacheDir}/dcols"
 export hashMech="sha1sum"
 
+restore_shader()
+{
+        if [ -n "$shader" ]; then
+                hyprshade on "$shader"
+        fi
+}
+
+save_shader()
+{
+        shader=$(hyprshade current)
+        hyprshade off
+        trap restore_shader EXIT
+}
+
 get_hashmap()
 {
         unset wallHash

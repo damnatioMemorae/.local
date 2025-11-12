@@ -10,7 +10,7 @@ r_override="window {height: 12em; width: 14em; y-offset: 0em;border: ${hypr_widt
 
 profileList=$(lact cli profile list)
 case "$1" in
-        r)
+        m)
                 selectedProfile=$(echo -e "$profileList" | rofi -p "GPU" -dmenu -theme-str "$r_override" -theme-str "$r_scale" -config "$rofiConf")
 
                 if [ "$selectedProfile" = "" ]; then

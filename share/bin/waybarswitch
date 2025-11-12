@@ -8,5 +8,6 @@ else
         case "$1" in
                 t) waybar -c "${wayConf}/top.jsonc" -s "${wayConf}/top.css" ;;
                 s) waybar -c "${wayConf}/side.jsonc" -s "${wayConf}/side.css" ;;
+                b) waybar -c "${wayConf}/bottom.jsonc" -s "${wayConf}/bottom.css" ;;
         esac
 fi

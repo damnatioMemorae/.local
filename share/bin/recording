@@ -1,5 +1,14 @@
 #!/usr/bin/bash
 
-if pgrep -x "wf-recorder" >/dev/null; then
-        echo "🬀"
-fi
+case "$1" in
+        t)
+                if pgrep -x "wf-recorder" >/dev/null; then
+                        echo "🬀"
+                fi
+                ;;
+        w)
+                if pgrep -x "wf-recorder" >/dev/null; then
+                        echo "{\"text\": \"🬀\"}"
+                fi
+                ;;
+esac

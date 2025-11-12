@@ -47,40 +47,73 @@ upd=$((ofc + aur + fpk))
 [ "${1}" == upgrade ] && printf "[Official] %-10s\n[AUR]      %-10s\n[Flatpak]  %-10s\n" "$ofc" "$aur" "$fpk" && exit
 
 # Show tooltip
-if [ $upd -eq 0 ]; then
-        upd="🬁 🬁 🬁"
-        echo "{\"text\":\"$upd\"}"
-elif [ $upd -lt 10 ]; then
-        upd="🬁 🬁 🬓"
-        echo "{\"text\":\"$upd\"}"
-elif [ $upd -lt 20 ]; then
-        upd="🬁 🬓 🬑"
-        echo "{\"text\":\"$upd\"}"
-elif [ $upd -lt 30 ]; then
-        upd="🬓 🬁 🬑"
-        echo "{\"text\":\"$upd\"}"
-elif [ $upd -lt 40 ]; then
-        upd="🬖 🬓 🬁"
-        echo "{\"text\":\"$upd\"}"
-elif [ $upd -lt 50 ]; then
-        upd="🮋 🬓 🬄"
-        echo "{\"text\":\"$upd\"}"
-elif [ $upd -lt 60 ]; then
-        upd="🮋 🬑 🬖"
-        echo "{\"text\":\"$upd\"}"
-elif [ $upd -lt 70 ]; then
-        upd="🮋 🬖 🬄"
-        echo "{\"text\":\"$upd\"}"
-elif [ $upd -lt 80 ]; then
-        upd="🮋 🮋 🬄"
-        echo "{\"text\":\"$upd\"}"
-elif [ $upd -lt 90 ]; then
-        upd="🮋 🮋 🬑"
-        echo "{\"text\":\"$upd\"}"
-elif [ $upd -lt 100 ]; then
-        upd="🮋 🮋 🮋"
-        echo "{\"text\":\"$upd\"}"
-else
-        upd="🮋 🮋 🮋 🮋"
-        echo "{\"text\":\"$upd\"}"
-fi
+case $1 in
+        t)
+                if [ $upd -eq 0 ]; then
+                        upd="🬁 🬁 🬁"
+                        echo "{\"text\":\"$upd\"}"
+                elif [ $upd -lt 10 ]; then
+                        upd="🬁 🬁 🬓"
+                        echo "{\"text\":\"$upd\"}"
+                elif [ $upd -lt 20 ]; then
+                        upd="🬁 🬓 🬑"
+                        echo "{\"text\":\"$upd\"}"
+                elif [ $upd -lt 30 ]; then
+                        upd="🬓 🬁 🬑"
+                        echo "{\"text\":\"$upd\"}"
+                elif [ $upd -lt 40 ]; then
+                        upd="🬖 🬓 🬁"
+                        echo "{\"text\":\"$upd\"}"
+                elif [ $upd -lt 50 ]; then
+                        upd="🮋 🬓 🬄"
+                        echo "{\"text\":\"$upd\"}"
+                elif [ $upd -lt 60 ]; then
+                        upd="🮋 🬑 🬖"
+                        echo "{\"text\":\"$upd\"}"
+                elif [ $upd -lt 70 ]; then
+                        upd="🮋 🬖 🬄"
+                        echo "{\"text\":\"$upd\"}"
+                elif [ $upd -lt 80 ]; then
+                        upd="🮋 🮋 🬄"
+                        echo "{\"text\":\"$upd\"}"
+                elif [ $upd -lt 90 ]; then
+                        upd="🮋 🮋 🬑"
+                        echo "{\"text\":\"$upd\"}"
+                elif [ $upd -lt 100 ]; then
+                        upd="🮋 🮋 🮋"
+                        echo "{\"text\":\"$upd\"}"
+                else
+                        upd="🮋 🮋 🮋 🮋"
+                        echo "{\"text\":\"$upd\"}"
+                fi
+                ;;
+        w)
+                if [ $upd -eq 0 ]; then
+                        upd="⡀"
+                        echo "{\"text\":\"$upd\"}"
+                elif [ $upd -lt 15 ]; then
+                        upd="⣀"
+                        echo "{\"text\":\"$upd\"}"
+                elif [ $upd -lt 30 ]; then
+                        upd="⣄"
+                        echo "{\"text\":\"$upd\"}"
+                elif [ $upd -lt 45 ]; then
+                        upd="⣤"
+                        echo "{\"text\":\"$upd\"}"
+                elif [ $upd -lt 60 ]; then
+                        upd="⣦"
+                        echo "{\"text\":\"$upd\"}"
+                elif [ $upd -lt 75 ]; then
+                        upd="⣶"
+                        echo "{\"text\":\"$upd\"}"
+                elif [ $upd -lt 90 ]; then
+                        upd="⣷"
+                        echo "{\"text\":\"$upd\"}"
+                else
+                        [ $upd -lt 100 ]
+                        f
+                        upd="⣿"
+                        echo "{\"text\":\"$upd\"}"
+                fi
+                ;;
+esac

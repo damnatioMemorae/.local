@@ -1,29 +1,15 @@
 #!/usr/bin/bash
 
-restore_shader()
-{
-        if [ -n "$shader" ]; then
-                hyprshade on "$shader"
-        fi
-}
-
-save_shader()
-{
-        shader=$(hyprshade current)
-        hyprshade off
-        trap restore_shader EXIT
-}
+scrDir=$(dirname "$(realpath "$0")")
+source "$scrDir"/globalcontrol
+save_dir="${2:-$XDG_VIDEOS_DIR}"
+save_file="$save_dir"/"$(date +'Video-%y-%m-%d_%H-%M-%S.mp4')"
 
 save_shader
 
 if [ -z "$XDG_VIDEO_DIR" ]; then
         XDG_VIDEOS_DIR="$HOME/Videos"
 fi
-
-scrDir=$(dirname "$(realpath "$0")")
-source "$scrDir"/globalcontrol
-save_dir="${2:-$XDG_VIDEOS_DIR}"
-save_file="$save_dir"/"$(date +'Video-%y-%m-%d_%H-%M-%S.mp4')"
 
 function print_error
 {
