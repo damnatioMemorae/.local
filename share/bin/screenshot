@@ -31,11 +31,11 @@ case $1 in
                 grimblast --freeze copysave area $temp_screenshot && tesseract $temp_screenshot $temp_text && cat $temp_text.txt | wl-copy ;;
 esac
 
+restore_shader
+
 telegram-send -f "$temp_screenshot"
 rm "$temp_screenshot"
 
 if [ -f "${save_dir}/${save_file}" ]; then
         notify-send -a "t1" -i "${save_dir}/${save_file}" "saved in ${save_dir}"
 fi
-
-restore_shader
