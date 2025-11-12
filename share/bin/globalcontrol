@@ -8,22 +8,19 @@ export thmbDir="${cacheDir}/thumbs"
 export dcolDir="${cacheDir}/dcols"
 export hashMech="sha1sum"
 
-restore_shader()
-{
+restore_shader() {
         if [ -n "$shader" ]; then
                 hyprshade on "$shader"
         fi
 }
 
-save_shader()
-{
+save_shader() {
         shader=$(hyprshade current)
         hyprshade off
         trap restore_shader EXIT
 }
 
-get_hashmap()
-{
+get_hashmap() {
         unset wallHash
         unset wallList
         unset skipStrays
@@ -63,8 +60,7 @@ get_hashmap()
         fi
 }
 
-get_themes()
-{
+get_themes() {
         unset thmSortS
         unset thmListS
         unset thmWallS
@@ -123,8 +119,7 @@ fi
 
 #// extra fns
 
-pkg_installed()
-{
+pkg_installed() {
         local pkgIn=$1
         if pacman -Qi "${pkgIn}" &>/dev/null; then
                 return 0
@@ -137,8 +132,7 @@ pkg_installed()
         fi
 }
 
-get_aurhlpr()
-{
+get_aurhlpr() {
         if pkg_installed yay; then
                 aurhlpr="yay"
         elif pkg_installed paru; then
@@ -146,8 +140,7 @@ get_aurhlpr()
         fi
 }
 
-set_conf()
-{
+set_conf() {
         local varName="${1}"
         local varData="${2}"
         touch "${hydeConfDir}/hyde.conf"
@@ -159,20 +152,17 @@ set_conf()
         fi
 }
 
-set_hash()
-{
+set_hash() {
         local hashImage="${1}"
         "${hashMech}" "${hashImage}" | awk '{print $1}'
 }
 
-send_notifs()
-{
+send_notifs() {
         local args=("$@")
         notify-send "${args[@]}" &
 }
 
-print_log()
-{
+print_log() {
         # [ -t 1 ] && return 0 # Skip if not in the terminal
         while (("$#")); do
                 # [ "${colored}" == "true" ]
