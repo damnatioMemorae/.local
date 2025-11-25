@@ -3,6 +3,8 @@
 scrDir=$(dirname "$(realpath "$0")")
 source "$scrDir"/globalcontrol
 
+# niri msg action switch-layout next
+
 hyprctl devices -j | jq -r '.keyboards[].name' | while read keyName; do
         hyprctl switchxkblayout "$keyName" next
 done
