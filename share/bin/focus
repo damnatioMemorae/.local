@@ -1,0 +1,54 @@
+#!/usr/bin/bash
+
+# Usage:
+#   focus.sh left
+#   focus.sh right
+
+direction="$1"
+
+if [[ "$direction" != "l" && "$direction" != "r" ]]; then
+        echo "Usage: $0 {l|r}"
+        exit 1
+fi
+
+# Determine workspace step (+1 right, -1 left)
+if [[ "$direction" == "r" ]]; then
+        step=1
+else
+        step=-1
+fi
+
+# Try to move focus to window in that direction
+hyprctl dispatch movefocus "$direction"
+sleep 0.05
+
+# After dispatch, check if focus actually changed directionally
+# Get monitors JSON
+monitors_json=$(hyprctl -j monitors)
+
+# Extract active monitor and its active workspace
+active_ws=$(echo "$monitors_json" | jq '.[] | select(.focused == true).activeWorkspace.id')
+
+# Get windows on the active workspace
+clients_json=$(hyprctl -j clients)
+ws_clients=$(echo "$clients_json" | jq --arg ws "$active_ws" '.[] | select(.workspace.id == ($ws | tonumber))')
+
+# Get currently focused window
+focused=$(echo "$ws_clients" | jq 'select(.focused == true)')
+
+# Determine whether a neighboring window exists in the target direction
+has_neighbor=$(echo "$ws_clients" | jq --argjson f "$focused" '
+    map(select(
+        (.at[0] < $f.at[0]) and ($ARGS.named.direction=="l") or
+        (.at[0] > $f.at[0]) and ($ARGS.named.direction=="r")
+    )) | length > 0
+' --arg direction "$direction")
+
+if [[ "$has_neighbor" == "true" ]]; then
+        # Neighbor existed; focusing succeeded
+        exit 0
+fi
+
+# No window in that direction → move to next/previous workspace
+new_ws=$((active_ws + step))
+hyprctl dispatch workspace "$new_ws"
