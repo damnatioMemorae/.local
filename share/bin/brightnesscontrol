@@ -1,22 +1,10 @@
 #!/usr/bin/env bash
 
-# Print error message for invalid arguments
-print_error() {
-        cat <<"EOF"
-Usage: ./brightnesscontrol.sh <action>
-Valid actions are:
-    i -- <i>ncrease brightness [+5%]
-    d -- <d>ecrease brightness [-5%]
-EOF
-}
-
-# Send a notification with brightness info
 send_notification() {
         brightness=$(brightnessctl info | grep -oP "(?<=\()\d+(?=%)")
         notify-send -r 91190 -t 500 "Brightness: ${brightness}%"
 }
 
-# Get the current brightness percentage and device name
 get_brightness() {
         brightness=$(brightnessctl -m | grep -o '[0-9]\+%' | head -c-2)
         device=$(brightnessctl -m | head -n 1 | awk -F',' '{print $1}' | sed 's/_/ /g; s/\<./\U&/g') # Get device name

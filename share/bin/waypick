@@ -46,7 +46,7 @@ copy_to_clipboard() {
 output_json() {
         color=$(get_last_color)
         # printf '{"text": "%s <span foreground=\\"%s\\">🮋</span>", "tooltip": "Click to pick a color\\nRight-click to copy to clipboard", "class": "waypick", "alt": "%s"}' "$color" "$color" "$color"
-        printf '{"text": "<span foreground=\\"%s\\">%s 🮋</span>", "tooltip": "Click to pick a color\\nRight-click to copy to clipboard", "class": "waypick", "alt": "%s"}' "$color" "$color" "$color"
+        printf '{"text": "<span foreground=\\"%s\\">%s ■</span>", "tooltip": "Click to pick a color\\nRight-click to copy to clipboard", "class": "waypick", "alt": "%s"}' "$color" "$color" "$color"
 }
 
 case "$1" in
