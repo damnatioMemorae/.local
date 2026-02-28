@@ -13,7 +13,7 @@ local grepWord = utils.grepWord
 
 local function get()
         local value = capture("brightnessctl" .. " " .. "info")
-        value       = grepWord(value, { word = "Current", count = 3 })
+        value       = grepWord(value, { word = "Current", count = 4 }):match("%((%d+)%%%)")
         print(value)
         return value
 end
