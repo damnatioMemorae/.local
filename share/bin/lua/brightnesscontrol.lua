@@ -12,8 +12,8 @@ local grepWord = utils.grepWord
 ------------------------------------------------------------------------------------------------------------------------
 
 local function get()
-        local value = utils.readFile("/sys/class/backlight/nvidia_0/brightness")
-
+        local value = capture("brightnessctl" .. " " .. "info")
+        value       = grepWord(value, { word = "Current", count = 3 })
         print(value)
         return value
 end
