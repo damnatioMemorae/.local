@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 scrDir="$(dirname "$(realpath "$0")")"
 source "${scrDir}"/globalcontrol
@@ -31,3 +31,11 @@ i_override="$(gsettings get org.gnome.desktop.interface icon-theme | sed "s/'//g
 i_override="configuration {icon-theme: \"${i_override}\";}"
 
 rofi -show "$r_mode" -theme-str "$r_scale" -theme-str "$r_override" -theme-str "$i_override" -config "$roconf"
+
+# rofi -theme ~/.config/rofi/themes/launcher.rasi \
+#      -show drun \
+#      -modi "drun,run,filebrowser,window" \
+#      -display-drun "" \
+#      -display-run "" \
+#      -display-filebrowser "󰉋" \
+#      -display-window "" \

@@ -1,0 +1,8 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
+  "workspace.library": ["$HOME/.local/share/bin/lua/", "${3rd}/luv/library"],
+  "runtime.version": "LuaJIT",
+  "diagnostics.globals": [],
+  "workspace.maxPreload": 1100,
+  "diagnostics.disable": ["unused-function", "trailing-space"]
+}

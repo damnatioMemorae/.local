@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+arg="$1"
+
+if printf "%s" "$arg" | grep -q "^file://"; then
+        arg="${arg#file://}"
+fi
+
+arg=$(printf  "%b" "${arg//%/\\x}")
+
+exec yazi "$arg"
