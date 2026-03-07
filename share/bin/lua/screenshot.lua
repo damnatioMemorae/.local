@@ -50,7 +50,6 @@ local function extract(opts)
         exec("tesseract" .. " " .. file .. text)
 end
 
-
 local opts = {
         s = function(args)
                 screenshot({ mode = "area", file = args[1] or saveFile })
