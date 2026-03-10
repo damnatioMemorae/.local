@@ -23,16 +23,30 @@ exec("mkdir" .. " " .. "-p" .. " " .. swpyDir)
 local swpyConf = io.open(swpyDir .. "/" .. "/config", "w")
 swpyConf:write("[Default]\nsave_dir=" .. saveDir .. "\nsave_filename_format=" .. saveFile) ---@diagnostic disable-line: need-check-nil
 
----@param opts { mode?: string, file?:string }
+---@param opts { prg?: string, mode?: string, e?: boolean, file?: string}
 local function screenshot(opts)
         opts         = opts or {}
+        local prg    = opts.prg or "grimblast"
         local mode   = opts.mode or "screen"
+        local e      = opts.e or false
         local file   = opts.file or saveFile
 
         local shader = saveShader()
 
-        exec("grimblast" .. " " .. "copysave" .. " " .. mode .. " " .. file)
-        exec("swappy" .. " " .. "-f" .. " " .. file, true)
+        if prg == "flameshot" then
+                if mode == "screen" then
+                        mode = "full"
+                        exec(prg .. " " .. mode .. " " .. "-c" .. " " .. "-p" .. " " .. file)
+                elseif mode == "area" then
+                        mode = "gui"
+                        exec(prg .. " " .. mode)
+                end
+        elseif e then
+                exec("grimblast" .. " " .. "copysave" .. " " .. mode .. " " .. file)
+                exec("swappy" .. " " .. "-f" .. " " .. file, true)
+        else
+                exec("grimblast" .. " " .. "copysave" .. " " .. mode .. " " .. file)
+        end
 
         restoreShader(shader)
 
@@ -51,11 +65,21 @@ local function extract(opts)
 end
 
 local opts = {
-        s = function(args)
-                screenshot({ mode = "area", file = args[1] or saveFile })
+        a = function(args)
+                screenshot({
+                        prg  = args[1] or "grimblast",
+                        mode = args[2] or "area",
+                        e    = args[5] or false,
+                        file = args[4] or saveFile,
+                })
         end,
-        m = function(args)
-                screenshot({ mode = "output", file = args[1] or saveFile })
+        s = function(args)
+                screenshot({
+                        prg  = args[1] or "grimblast",
+                        mode = args[2] or "screen",
+                        e    = args[3] or false,
+                        file = args[4] or saveFile,
+                })
         end,
         x = function(args)
                 extract({ send = args[1] or false })
