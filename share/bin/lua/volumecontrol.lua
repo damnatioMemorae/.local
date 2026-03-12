@@ -3,11 +3,11 @@
 local home     = os.getenv("HOME")
 package.path   = package.path .. ";" .. home .. "/.local/share/bin/lua/?.lua"
 
--- local utils    = require("utils")
--- local exec     = utils.exec
--- local capture  = utils.execCapture
--- local grepWord = utils.grepWord
--- local notify   = utils.notify
+local utils    = require("utils")
+local exec     = utils.exec
+local capture  = utils.execCapture
+local grepWord = utils.grepWord
+local notify   = utils.notify
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ local function get(opts)
         opts        = opts or {}
         local dev   = opts.dev or "Master"
 
-        local value = grepWord(execCapture("amixer" .. " " .. "sget" .. " " .. dev), { pattern = "%[(%d+)%%%]" })
+        local value = grepWord(capture("amixer" .. " " .. "sget" .. " " .. dev), { pattern = "%[(%d+)%%%]" })
         print(value)
 
         return value
