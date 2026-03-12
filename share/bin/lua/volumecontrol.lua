@@ -33,7 +33,6 @@ local function set(opts)
                 exec("amixer" .. " " .. "sset" .. " " .. dev .. " " .. v .. "%" .. mode)
         elseif mode == "toggle" then
                 exec("amixer" .. " " .. "sset" .. " " .. dev .. " " .. mode)
-                notify(get({ dev = dev }), { urgency = "critical" }) ---@diagnostic disable-line: param-type-mismatch
         else
                 exec("amixer" .. " " .. "sset" .. " " .. dev .. " " .. v .. "%")
         end
