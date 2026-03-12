@@ -1,22 +1,19 @@
 #!/usr/bin/env lua
 
----[[
-local M = {}
-
 ------------------------------------------------------------------------------------------------------------------------
 -- PATHS
 
-M.home = os.getenv("HOME")
+_G.home = os.getenv("HOME")
 
-M.paths = {
-        scrDir  = M.home .. "/" .. ".local/share/bin/lua/",
-        confDir = M.home .. "/" .. ".config/",
+_G.paths = {
+        scrDir  = _G.home .. "/" .. ".local/share/bin/lua/",
+        confDir = _G.home .. "/" .. ".config/",
 }
 
 -- Execute a shell
 ---@param cmd string
 ---@param async? boolean
-function M.exec(cmd, async)
+function _G.exec(cmd, async)
         if async then
                 os.execute(cmd .. " &" .. ">/dev/null")
         else
@@ -28,7 +25,7 @@ end
 ---@param cmd string
 ---@param async? boolean
 ---@param arg? table
-function M.execArg(cmd, arg, async)
+function _G.execArg(cmd, arg, async)
         if async then
                 os.execute(cmd .. arg .. " &" .. ">/dev/null")
         else
@@ -38,7 +35,7 @@ end
 
 ---@param cmd string
 ---@param a?  string
-function M.execCapture(cmd, a)
+function _G.execCapture(cmd, a)
         a = a or "a"
         local handle = io.popen(cmd)
 
@@ -49,7 +46,7 @@ end
 
 -- File I/O
 ---@param path string
-function M.readFile(path)
+function _G.readFile(path)
         local f = io.open(path, "r")
         if not f then return nil end
         local content = f:read("*a")
@@ -59,7 +56,7 @@ end
 
 --[[
 ---@param opts { path: string, pattern?: string, open?: string, read?: string }
-function M.readFile(opts)
+function _G.readFile(opts)
         opts          = opts or {}
         local path    = opts.path or "/"
         local pattern = opts.pattern or "%S+"
@@ -76,35 +73,35 @@ end
 
 ---@param path string
 ---@param content string
-function M.writeFile(path, content)
+function _G.writeFile(path, content)
         local f = io.open(path, "w")
         if not f then return end
         f:write(content)
         f:close()
 end
 
-function M.saveShader()
-        local shader = M.execCapture("hyprshade current")
-        M.exec("hyprshade off")
+function _G.saveShader()
+        local shader = _G.execCapture("hyprshade current")
+        _G.exec("hyprshade off")
         return shader
 end
 
 ---@param shader? string
-function M.restoreShader(shader)
+function _G.restoreShader(shader)
         if shader then
-                M.exec("hyprshade on" .. " " .. shader)
+                _G.exec("hyprshade on" .. " " .. shader)
         end
 end
 
 -- NOTIFICATION
 ---@param msg string
----@param opts? {timeout?: integer, urgency?: string}
-function M.notify(msg, opts)
+---@param opts? {timeout?: integer, urgency?: "low"|"normal"|"critical"}
+function _G.notify(msg, opts)
         msg           = msg or "Notification placeholder"
         opts          = opts or {}
         local urgency = opts.urgency or "normal"
         local timeout = opts.timeout or 2000
-        M.exec("notify-send"
+        _G.exec("notify-send"
                 .. " "
                 .. "'"
                 .. msg
@@ -121,15 +118,15 @@ end
 
 -- PACKAGE
 ---@param cmd string
-function M.pkgInstalled(cmd)
-        -- return M.exec("command -v" .. " " .. cmd .. " " .. ">/dev/null 2>&1") ~= nil
-        return M.exec("command -v" .. " " .. cmd)
+function _G.pkgInstalled(cmd)
+        -- return _G.exec("command -v" .. " " .. cmd .. " " .. ">/dev/null 2>&1") ~= nil
+        return _G.exec("command -v" .. " " .. cmd)
 end
 
 -- GREP WORD
 ---@param text string|function|any
 ---@param opts { word?: string, pattern?: string, count?: integer }
-function M.grepWord(text, opts)
+function _G.grepWord(text, opts)
         opts          = opts or {}
         local word    = opts.word or "*"
         local count   = opts.count or 1
@@ -154,7 +151,7 @@ end
 ---@param strStart string
 ---@param strStop string
 ---@param opts { direction?: string }
-function M.grepLines(text, strStart, strStop, opts)
+function _G.grepLines(text, strStart, strStop, opts)
         opts            = opts or {}
         local direction = opts.direction or "d"
 
@@ -194,15 +191,11 @@ function M.grepLines(text, strStart, strStop, opts)
 end
 
 -- SLEEP
-function M.sleep(n)
-        M.exec("sleep" .. " " .. n)
+function _G.sleep(n)
+        _G.exec("sleep" .. " " .. n)
 end
 
 -- PROC
-function M.proc(name)
-        return tostring(M.execCapture("pgrep" .. " " .. "-x" .. " " .. name))
+function _G.proc(name)
+        return tostring(_G.execCapture("pgrep" .. " " .. "-x" .. " " .. name))
 end
-
-------------------------------------------------------------------------------------------------------------------------
-return M
---]]

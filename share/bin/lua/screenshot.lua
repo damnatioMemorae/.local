@@ -69,7 +69,7 @@ local opts = {
                 screenshot({
                         prg  = args[1] or "grimblast",
                         mode = args[2] or "area",
-                        e    = args[5] or false,
+                        e    = args[3] or false,
                         file = args[4] or saveFile,
                 })
         end,

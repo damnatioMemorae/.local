@@ -4,5 +4,6 @@
   "runtime.version": "LuaJIT",
   "diagnostics.globals": [],
   "workspace.maxPreload": 1100,
-  "diagnostics.disable": ["unused-function", "trailing-space"]
+  "diagnostics.disable": ["unused-function", "trailing-space",
+        "spell-check"]
 }

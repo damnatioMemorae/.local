@@ -3,11 +3,11 @@
 local home     = os.getenv("HOME")
 package.path   = package.path .. ";" .. home .. "/.local/share/bin/lua/?.lua"
 
-local utils    = require("utils")
-local exec     = utils.exec
-local capture  = utils.execCapture
-local grepWord = utils.grepWord
-local notify   = utils.notify
+-- local utils    = require("utils")
+-- local exec     = utils.exec
+-- local capture  = utils.execCapture
+-- local grepWord = utils.grepWord
+-- local notify   = utils.notify
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ local function get(opts)
         opts        = opts or {}
         local dev   = opts.dev or "Master"
 
-        local value = grepWord(capture("amixer" .. " " .. "sget" .. " " .. dev), { pattern = "%[(%d+)%%%]" })
+        local value = grepWord(execCapture("amixer" .. " " .. "sget" .. " " .. dev), { pattern = "%[(%d+)%%%]" })
         print(value)
 
         return value
@@ -31,17 +31,14 @@ local function set(opts)
 
         if mode then
                 exec("amixer" .. " " .. "sset" .. " " .. dev .. " " .. v .. "%" .. mode)
-                print(get({ dev = dev }))
         elseif mode == "toggle" then
                 exec("amixer" .. " " .. "sset" .. " " .. dev .. " " .. mode)
-                -- print(get({ dev = dev }))
-                print(get({ dev = dev }))
+                notify(get({ dev = dev }), { urgency = "critical" }) ---@diagnostic disable-line: param-type-mismatch
         else
                 exec("amixer" .. " " .. "sset" .. " " .. dev .. " " .. v .. "%")
-                print(get({ dev = dev }))
         end
 
-        notify(get({ dev = dev })) ---@diagnostic disable-line: param-type-mismatch
+        notify(get({ dev = dev }), { urgency = "normal" }) ---@diagnostic disable-line: param-type-mismatch
 end
 
 local control = {
@@ -55,7 +52,7 @@ local control = {
                 set({
                         dev  = args[1] or "Master",
                         v    = args[2] or 5,
-                        mode = args[3] or ""
+                        mode = args[3] or "",
                 })
         end,
 }
