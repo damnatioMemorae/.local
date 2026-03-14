@@ -6,7 +6,7 @@ package.path        = package.path .. ";" .. home .. "/" .. ".local/share/bin/lu
 local utils         = require("utils")
 local exec          = utils.exec
 local capture       = utils.execCapture
-local confDir       = utils.paths.confDir
+local confDir       = utils.paths.conf_dir
 local saveShader    = utils.saveShader
 local restoreShader = utils.restoreShader
 

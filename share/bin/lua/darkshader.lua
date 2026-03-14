@@ -1,17 +1,19 @@
 #!/usr/bin/env lua
 
-local home = os.getenv("HOME")
-package.path = package.path .. ";" .. home .. "/.local/share/bin/lua/?.lua"
+---@diagnostic disable: need-check-nil
 
-local utils   = require("utils")
-local exec    = utils.exec
-local capture = utils.execCapture
-local shader  = capture("hyprshade current")
+local home     = os.getenv("HOME")
+package.path   = package.path .. ";" .. home .. "/.local/share/bin/lua/?.lua"
+
+local utils    = require("utils")
+local conf_dir = utils.paths.conf_dir
+local far      = utils.findAndReplace
 
 ------------------------------------------------------------------------------------------------------------------------
 
-if string.find(shader, "dark") then
-        exec("hyprshade off")
-else
-        exec("hyprshade on dark")
-end
+local fname    = conf_dir .. "/hypr/themes/theme.conf"
+local str      = "screen_shader = "
+local dark     = str .. "~/.config/hypr/shaders/dark.frag"
+local none     = str .. ""
+
+far(fname, dark, none)

@@ -19,19 +19,14 @@ local function cpu(opts)
 
         local function getJiffies()
                 local line = io.open("/proc/stat", "r"):read("l")
-                -- local line = utils.readFile({path = "/proc/stat"})
 
                 while not grepWord(line, { word = "cpu", count = 1 }) do
                         line = io.open("/proc/stat", "r"):read("l")
-                        -- line = utils.readFile({path = "/proc/stat", read = "l"})
                 end
 
                 local parts = {}
-                -- line = utils.readFile({ path = "/proc/stat", pattern = "^%S+%s*" })
-                -- for part in utils.readFile({ path = "/proc/stat", pattern = "%S+" }) do
                 line = line:gsub("^%S+%s*", "")
                 for part in line:gmatch("%S+") do
-                        -- table.insert(parts, part)
                         parts[#parts + 1] = part
                 end
 

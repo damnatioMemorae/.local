@@ -1,5 +1,7 @@
 #!/usr/bin/env lua
 
+---@diagnostic disable: need-check-nil
+
 ---[[
 local M = {}
 
@@ -9,8 +11,8 @@ local M = {}
 M.home = os.getenv("HOME")
 
 M.paths = {
-        scrDir  = M.home .. "/" .. ".local/share/bin/lua/",
-        confDir = M.home .. "/" .. ".config/",
+        scrDir   = M.home .. "/" .. ".local/share/bin/lua/",
+        conf_dir = M.home .. "/" .. ".config/",
 }
 
 -- Execute a shell
@@ -191,6 +193,26 @@ function M.grepLines(text, strStart, strStop, opts)
                         end
                 end
         end
+end
+
+-- FAR
+---@param fname string
+---@param i string
+---@param j string
+function M.findAndReplace(fname, i, j)
+        local file    = io.open(fname, "r")
+        local content = file:read("*a")
+        file:close()
+
+        if content:find(i, 1, true) then
+                content = content:gsub(i, j)
+        elseif content:find(j, 1, true) then
+                content = content:gsub(j, i)
+        end
+
+        file = io.open(fname, "w")
+        file:write(content)
+        file:close()
 end
 
 -- SLEEP
