@@ -1,6 +1,7 @@
 #!/usr/bin/env lua
 
 ---@diagnostic disable: need-check-nil
+---@diagnostic disable: param-type-mismatch
 
 ---[[
 local M = {}
@@ -195,14 +196,21 @@ function M.grepLines(text, strStart, strStop, opts)
         end
 end
 
--- FAR
+-- FaR
 ---@param fname string
 ---@param i string
----@param j string
+---@param j? string
 function M.findAndReplace(fname, i, j)
         local file    = io.open(fname, "r")
         local content = file:read("*a")
         file:close()
+
+        -- if j == nil then
+        --         return content:find(i, 1, true)
+        -- else
+        --         content:find(i, 1, true)
+        --         content = content:gsub(i, j)
+        -- end
 
         if content:find(i, 1, true) then
                 content = content:gsub(i, j)
@@ -213,6 +221,28 @@ function M.findAndReplace(fname, i, j)
         file = io.open(fname, "w")
         file:write(content)
         file:close()
+end
+
+-- LS
+---@param path string
+function M.ls(path)
+        path = path or "."
+
+        local cmd
+        cmd = 'ls -1 "' .. path .. '"'
+
+        local p = io.popen(cmd)
+        if not p then
+                return nil, "failed to run command"
+        end
+
+        local files = {}
+        for file in p:lines() do
+                table.insert(files, file)
+        end
+
+        p:close()
+        return files
 end
 
 -- SLEEP
