@@ -224,25 +224,16 @@ function M.findAndReplace(fname, i, j)
 end
 
 -- LS
----@param path string
-function M.ls(path)
-        path = path or "."
-
-        local cmd
-        cmd = 'ls -1 "' .. path .. '"'
-
-        local p = io.popen(cmd)
-        if not p then
-                return nil, "failed to run command"
+---@param dir string
+function M.ls(dir)
+        local i, t, popen = 0, {}, io.popen
+        local pfile = popen("ls -a '" .. dir .. "'")
+        for filename in pfile:lines() do
+                i    = i + 1
+                t[i] = filename
         end
-
-        local files = {}
-        for file in p:lines() do
-                table.insert(files, file)
-        end
-
-        p:close()
-        return files
+        pfile:close()
+        return t
 end
 
 -- SLEEP

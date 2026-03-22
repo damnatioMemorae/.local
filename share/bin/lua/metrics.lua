@@ -62,11 +62,11 @@ local function bat(opts)
         opts          = opts or {}
         local stat    = opts.stat or "capacity"
 
-        local batFile = capture("ls" .. " " .. "/sys/class/power_supply/")
-        local batName = grepWord(batFile, { word = "BAT", count = 1 })
-        batFile       = "/sys/class/power_supply/" .. batName .. "/"
+        local bat_file = capture("ls" .. " " .. "/sys/class/power_supply/")
+        local bat_name = grepWord(bat_file, { word = "BAT", count = 1 })
+        bat_file       = "/sys/class/power_supply/" .. bat_name .. "/"
 
-        local status  = io.open(batFile .. stat, "r"):read("l")
+        local status  = io.open(bat_file .. stat, "r"):read("l")
         print(status)
         return status
 end
