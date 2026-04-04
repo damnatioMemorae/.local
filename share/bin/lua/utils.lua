@@ -60,23 +60,6 @@ function M.readFile(path)
         return content:gsub("%s+", "")
 end
 
---[[
----@param opts { path: string, pattern?: string, open?: string, read?: string }
-function M.readFile(opts)
-        opts          = opts or {}
-        local path    = opts.path or "/"
-        local pattern = opts.pattern or "%S+"
-        local open    = opts.open or "r"
-        local read    = opts.read or "*a"
-
-        local f       = io.open(path, open)
-        if not f then return nil end
-        local content = f:read(read)
-        f:close()
-        return content:gsub(pattern, "")
-end
---]]
-
 ---@param path string
 ---@param content string
 function M.writeFile(path, content)
@@ -204,13 +187,6 @@ function M.findAndReplace(fname, i, j)
         local file    = io.open(fname, "r")
         local content = file:read("*a")
         file:close()
-
-        -- if j == nil then
-        --         return content:find(i, 1, true)
-        -- else
-        --         content:find(i, 1, true)
-        --         content = content:gsub(i, j)
-        -- end
 
         if content:find(i, 1, true) then
                 content = content:gsub(i, j)

@@ -18,7 +18,7 @@ fi
 wallbashOut="${dcolDir}/$(set_hash "${wallbashImg}").dcol"
 
 if [ ! -f "${wallbashOut}" ] ; then
-    "${scrDir}/swwwallcache.sh" -w "${wallbashImg}" &> /dev/null
+    "${scrDir}/awwwallcache.sh" -w "${wallbashImg}" &> /dev/null
 fi
 
 set -a

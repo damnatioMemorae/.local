@@ -14,14 +14,14 @@ local wayConf = home .. "/.config/waybar"
 
 ---@param opts? { side?: string }
 local function set(opts)
-        opts          = opts or {}
-        local side    = opts.side or "bottom"
+        opts           = opts or {}
+        local side     = opts.side or "bottom"
 
-        local config  = wayConf .. "/" .. side .. ".jsonc"
-        local style   = wayConf .. "/" .. side .. ".css"
-        local wayProc = proc("waybar")
+        local config   = wayConf .. "/" .. side .. ".jsonc"
+        local style    = wayConf .. "/" .. side .. ".css"
+        local way_proc = proc("waybar")
 
-        if type(tonumber(wayProc)) == "number" then
+        if type(tonumber(way_proc)) == "number" then
                 exec("pkill" .. " " .. "-x" .. " " .. "waybar")
         else
                 exec("waybar" .. " " .. "-c" .. " " .. config .. " " .. "-s" .. " " .. style, true)

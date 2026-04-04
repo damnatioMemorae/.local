@@ -2,19 +2,19 @@
 
 ---@diagnostic disable: need-check-nil
 
-local home       = os.getenv("HOME")
-package.path     = package.path .. ";" .. home .. "/.local/share/bin/lua/?.lua"
+local home        = os.getenv("HOME")
+package.path      = package.path .. ";" .. home .. "/.local/share/bin/lua/?.lua"
 
-local utils      = require("utils")
-local conf_dir   = utils.paths.conf_dir
-local far        = utils.findAndReplace
+local utils       = require("utils")
+local conf_dir    = utils.paths.conf_dir
+local far         = utils.findAndReplace
 
 ------------------------------------------------------------------------------------------------------------------------
 
-local fname      = conf_dir .. "/hypr/themes/theme.conf"
-local str        = "screen_shader = "
-local shader_dir = str .. "~/.config/hypr/shaders/"
-local none       = str .. ""
+local config_file = conf_dir .. "/hypr/themes/theme.conf"
+local str         = "screen_shader ="
+local shader_dir  = str .. "~/.config/hypr/shaders/"
+local empty       = str .. ""
 
 ---@param opts? { shader?: string }
 local function toggle(opts)
@@ -22,7 +22,7 @@ local function toggle(opts)
         local shader      = opts.shader or "dark"
         local shader_type = ".frag" or ".glsl"
 
-        far(fname, shader_dir .. shader .. shader_type, none)
+        far(config_file, shader_dir .. shader .. shader_type, empty)
 end
 
 ---@param opts? { picker?: string }
@@ -32,11 +32,11 @@ local function picker(opts)
 end
 
 local shader = {
-        menu   = function(args)
-                picker({ menu = args[1] or "rofi" })
-        end,
         toggle = function(args)
                 toggle({ shader = args[1] or "dark" })
+        end,
+        menu   = function(args)
+                picker({ menu = args[1] or "rofi" })
         end,
 }
 

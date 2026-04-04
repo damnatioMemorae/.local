@@ -115,5 +115,5 @@ fi
 
 #// wallpaper
 
-"${scrDir}/swwwallpaper" -s "$(readlink "${hydeThemeDir}/wall.set")"
+"${scrDir}/awwwallpaper" -s "$(readlink "${hydeThemeDir}/wall.set")"
 hyprctl reload
