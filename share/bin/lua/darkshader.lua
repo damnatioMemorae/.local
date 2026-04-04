@@ -12,7 +12,7 @@ local far         = utils.findAndReplace
 ------------------------------------------------------------------------------------------------------------------------
 
 local config_file = conf_dir .. "/hypr/themes/theme.conf"
-local str         = "screen_shader ="
+local str         = "screen_shader = "
 local shader_dir  = str .. "~/.config/hypr/shaders/"
 local empty       = str .. ""
 
