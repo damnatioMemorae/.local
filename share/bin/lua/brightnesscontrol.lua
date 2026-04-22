@@ -18,11 +18,11 @@ local function get()
         return value
 end
 
----@param opts { v?: number, mode?: integer }
-local function set(opts)
-        opts       = opts or {}
-        local mode = opts.mode or ""
-        local v    = opts.v or 5
+---@param args { v?: number, mode?: integer }
+local function set(args)
+        args       = args or {}
+        local mode = args.mode or ""
+        local v    = args.v or 5
 
         exec("brightnessctl" .. " " .. "set" .. " " .. v .. "%" .. mode)
         notify(tostring(get()))

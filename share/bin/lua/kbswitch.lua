@@ -12,9 +12,9 @@ local grepLines = utils.grepLines
 
 ------------------------------------------------------------------------------------------------------------------------
 
----@param opts? { prop?: string }
-local function get(opts)
-        opts            = opts or {}
+---@param args? { prop?: string }
+local function get(args)
+        args            = args or {}
 
         local keyboards = capture("hyprctl" .. " " .. "devices" .. " " .. "-j")
 
@@ -25,10 +25,10 @@ local function get(opts)
         print(name)
 end
 
----@param opts { layout?: string }
-local function set(opts)
-        opts         = opts or {}
-        local layout = opts.layout or "next"
+---@param args { layout?: string }
+local function set(args)
+        args         = args or {}
+        local layout = args.layout or "next"
 end
 
 local control = {

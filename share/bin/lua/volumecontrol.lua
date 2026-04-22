@@ -11,33 +11,48 @@ local notify   = utils.notify
 
 ------------------------------------------------------------------------------------------------------------------------
 
----@param opts? { dev?: string, info?: string }
-local function get(opts)
-        opts        = opts or {}
-        local dev   = opts.dev or "Master"
+---@param args? { dev?: string, info?: string }
+local function get(args)
+        args         = args or {}
+        local dev    = args.dev or "Master"
+        local info   = args.info or "value"
 
-        local value = grepWord(capture("amixer" .. " " .. "sget" .. " " .. dev), { pattern = "%[(%d+)%%%]" })
-        print(value)
+        local cmd    = "amixer" .. " " .. "sget" .. " "
 
-        return value
-end
+        local value  = grepWord(capture(cmd .. dev), { pattern = "%[(%d+)%%%]" })
+        local status = grepWord(capture(cmd .. dev), { word = "Right:", count = 6 }) or
+                   grepWord(capture(cmd .. dev), { word = "Right:", count = 6 })
 
----@param opts? { dev?: string, v?: integer, mode?: string }
-local function set(opts)
-        opts       = opts or {}
-        local dev  = opts.dev or "Master"
-        local v    = opts.v or 5
-        local mode = opts.mode or ""
-
-        if mode then
-                exec("amixer" .. " " .. "sset" .. " " .. dev .. " " .. v .. "%" .. mode)
-        elseif mode == "toggle" then
-                exec("amixer" .. " " .. "sset" .. " " .. dev .. " " .. mode)
-        else
-                exec("amixer" .. " " .. "sset" .. " " .. dev .. " " .. v .. "%")
+        local msg
+        if info == "status" then
+                msg = dev .. " " .. status
+        elseif info == "value" then
+                msg = dev .. " " .. value
+        elseif info == "both" then
+                msg = dev .. " " .. status .. " " .. value
         end
 
-        notify(get({ dev = dev }), { urgency = "normal" }) ---@diagnostic disable-line: param-type-mismatch
+        print(msg)
+
+        return msg
+end
+
+---@param args? { dev?: string, v?: integer, mode?: string }
+local function set(args)
+        args       = args or {}
+        local dev  = args.dev or "Master"
+        local mode = args.mode or ""
+        local v    = args.v or 5
+
+        local cmd  = "amixer" .. " " .. "sset" .. " " .. dev .. " "
+
+        if mode == "+" or mode == "-" then
+                exec(cmd .. v .. "%" .. mode)
+                notify(get({ dev = dev, info = "value" }), { urgency = "normal" })
+        elseif mode == "toggle" then
+                exec(cmd .. mode)
+                notify(get({ dev = dev, info = "both" }), { urgency = "normal" })
+        end
 end
 
 local control = {
@@ -50,8 +65,8 @@ local control = {
         set = function(args)
                 set({
                         dev  = args[1] or "Master",
-                        v    = args[2] or 5,
-                        mode = args[3] or "",
+                        mode = args[2] or "",
+                        v    = args[3] or 5,
                 })
         end,
 }

@@ -27,11 +27,11 @@ local function get()
         return current, msg
 end
 
----@param opts { v?: integer }
-local function set(opts)
-        opts       = opts or {}
-        local v    = tonumber(opts.v) or 2000
-        local mode = opts.mode or "cli"
+---@param args { v?: integer }
+local function set(args)
+        args       = args or {}
+        local v    = tonumber(args.v) or 2000
+        local mode = args.mode or "cli"
 
         local function cli()
                 exec("sudo" ..
@@ -53,7 +53,7 @@ local function set(opts)
 end
 
 ---[[
-local opts = {
+local args = {
         get = function()
                 get()
         end,
@@ -70,7 +70,7 @@ if not func then
         os.exit(1)
 end
 
-local handler = opts[func]
+local handler = args[func]
 if not handler then
         os.exit(1)
 end

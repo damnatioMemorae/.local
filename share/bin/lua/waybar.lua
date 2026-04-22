@@ -12,10 +12,10 @@ local proc    = utils.proc
 
 local wayConf = home .. "/.config/waybar"
 
----@param opts? { side?: string }
-local function set(opts)
-        opts           = opts or {}
-        local side     = opts.side or "bottom"
+---@param args? { side?: string }
+local function set(args)
+        args           = args or {}
+        local side     = args.side or "bottom"
 
         local config   = wayConf .. "/" .. side .. ".jsonc"
         local style    = wayConf .. "/" .. side .. ".css"

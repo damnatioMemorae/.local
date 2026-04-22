@@ -16,19 +16,19 @@ local str         = "screen_shader = "
 local shader_dir  = str .. "~/.config/hypr/shaders/"
 local empty       = str .. ""
 
----@param opts? { shader?: string }
-local function toggle(opts)
-        opts              = opts or {}
-        local shader      = opts.shader or "dark"
+---@param args? { shader?: string }
+local function toggle(args)
+        args              = args or {}
+        local shader      = args.shader or "dark"
         local shader_type = ".frag" or ".glsl"
 
         far(config_file, shader_dir .. shader .. shader_type, empty)
 end
 
----@param opts? { picker?: string }
-local function picker(opts)
-        opts        = opts or {}
-        local dmenu = opts.menu or "rofi"
+---@param args? { menu?: string }
+local function picker(args)
+        args        = args or {}
+        local dmenu = args.menu or "rofi"
 end
 
 local shader = {

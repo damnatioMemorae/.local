@@ -23,13 +23,13 @@ exec("mkdir" .. " " .. "-p" .. " " .. swpyDir)
 local swpyConf = io.open(swpyDir .. "/" .. "/config", "w")
 swpyConf:write("[Default]\nsave_dir=" .. saveDir .. "\nsave_filename_format=" .. saveFile) ---@diagnostic disable-line: need-check-nil
 
----@param opts { prg?: string, mode?: string, e?: boolean, file?: string}
-local function screenshot(opts)
-        opts         = opts or {}
-        local prg    = opts.prg or "grimblast"
-        local mode   = opts.mode or "screen"
-        local e      = opts.e or false
-        local file   = opts.file or saveFile
+---@param args { prg?: string, mode?: string, e?: boolean, file?: string}
+local function screenshot(args)
+        args         = args or {}
+        local prg    = args.prg or "grimblast"
+        local mode   = args.mode or "screen"
+        local e      = args.e or false
+        local file   = args.file or saveFile
 
         local shader = saveShader()
 
@@ -53,18 +53,18 @@ local function screenshot(opts)
         exec("telegram-send" .. " " .. "-f" .. " " .. file, true)
 end
 
----@param opts { send?: boolean, file?: string }
-local function extract(opts)
-        opts       = opts or {}
-        local send = opts.send or false
-        local file = opts.file or saveFile
+---@param args { send?: boolean, file?: string }
+local function extract(args)
+        args       = args or {}
+        local send = args.send or false
+        local file = args.file or saveFile
         local text = nil
 
         exec("grimblast" .. " " .. "copysave" .. " " .. "area" .. " " .. file)
         exec("tesseract" .. " " .. file .. text)
 end
 
-local opts = {
+local args = {
         a = function(args)
                 screenshot({
                         prg  = args[1] or "grimblast",
@@ -91,7 +91,7 @@ if not func then
         os.exit(1)
 end
 
-local handler = opts[func]
+local handler = args[func]
 if not handler then
         os.exit(1)
 end

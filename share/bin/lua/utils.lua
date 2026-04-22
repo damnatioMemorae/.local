@@ -84,12 +84,12 @@ end
 
 -- NOTIFICATION
 ---@param msg string
----@param opts? {timeout?: integer, urgency?: "low"|"normal"|"critical"}
-function M.notify(msg, opts)
+---@param args? {timeout?: integer, urgency?: "low"|"normal"|"critical"}
+function M.notify(msg, args)
         msg           = msg or "Notification placeholder"
-        opts          = opts or {}
-        local urgency = opts.urgency or "normal"
-        local timeout = opts.timeout or 2000
+        args          = args or {}
+        local urgency = args.urgency or "normal"
+        local timeout = args.timeout or 2000
         M.exec("notify-send"
                 .. " "
                 .. "'"
@@ -114,12 +114,12 @@ end
 
 -- GREP WORD
 ---@param text string|function|any
----@param opts { word?: string, pattern?: string, count?: integer }
-function M.grepWord(text, opts)
-        opts          = opts or {}
-        local word    = opts.word or "*"
-        local count   = opts.count or 1
-        local pattern = opts.pattern or "[^\n]*" .. word .. "[^\n]*" ---@diagnostic disable-line: ambiguity-1
+---@param args { word?: string, pattern?: string, count?: integer }
+function M.grepWord(text, args)
+        args          = args or {}
+        local word    = args.word or "*"
+        local count   = args.count or 1
+        local pattern = args.pattern or "[^\n]*" .. word .. "[^\n]*" ---@diagnostic disable-line: ambiguity-1
 
         text          = tostring(text)
         local chunk   = text:match(pattern)
@@ -139,10 +139,10 @@ end
 ---@param text string
 ---@param strStart string
 ---@param strStop string
----@param opts { direction?: string }
-function M.grepLines(text, strStart, strStop, opts)
-        opts            = opts or {}
-        local direction = opts.direction or "d"
+---@param args { direction?: string }
+function M.grepLines(text, strStart, strStop, args)
+        args            = args or {}
+        local direction = args.direction or "d"
 
         local lines     = {}
         for line in text:gmatch("[^\n]*") do

@@ -11,11 +11,11 @@ local sleep    = utils.sleep
 ------------------------------------------------------------------------------------------------------------------------
 
 -- CPU
----@param opts? { stat?: string, t?: integer }
-local function cpu(opts)
-        opts       = opts or {}
-        local stat = opts.stat or "perc"
-        local t    = opts.t or 1
+---@param args? { stat?: string, t?: integer }
+local function cpu(args)
+        args       = args or {}
+        local stat = args.stat or "perc"
+        local t    = args.t or 1
 
         local function getJiffies()
                 local line = io.open("/proc/stat", "r"):read("l")
@@ -57,10 +57,10 @@ local function cpu(opts)
 end
 
 -- BATTERY
----@param opts? { stat?: string }
-local function bat(opts)
-        opts          = opts or {}
-        local stat    = opts.stat or "capacity"
+---@param args? { stat?: string }
+local function bat(args)
+        args          = args or {}
+        local stat    = args.stat or "capacity"
 
         local bat_file = capture("ls" .. " " .. "/sys/class/power_supply/")
         local bat_name = grepWord(bat_file, { word = "BAT", count = 1 })
@@ -72,12 +72,12 @@ local function bat(opts)
 end
 
 -- MEMORY
----@param opts? { stat?: integer, format?: string, dev?: string }
-local function mem(opts)
-        opts         = opts or {}
-        local dev    = opts.dev or "Mem"
-        local stat   = opts.stat or "Total"
-        local format = opts.format or "mebi"
+---@param args? { stat?: integer, format?: string, dev?: string }
+local function mem(args)
+        args         = args or {}
+        local dev    = args.dev or "Mem"
+        local stat   = args.stat or "Total"
+        local format = args.format or "mebi"
 
         local function getMem(a, b, f)
                 local line = io.open("/proc/meminfo", "r"):read("a")
