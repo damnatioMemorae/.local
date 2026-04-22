@@ -149,28 +149,28 @@ function M.grepLines(text, strStart, strStop, args)
                 table.insert(lines, line)
         end
 
-        local indexStart
+        local index_start
         for i, line in ipairs(lines) do
                 if line:find(strStart, 1, true) then
-                        indexStart = i
+                        index_start = i
                         break
                 end
         end
 
-        if not indexStart then
+        if not index_start then
                 return
         end
 
         direction = direction or "d"
         if direction == "d" then
-                for i = indexStart, #lines do
+                for i = index_start, #lines do
                         print(lines[i])
                         if lines[i]:find(strStop, 1, true) then
                                 break
                         end
                 end
         elseif direction == "u" then
-                for i = indexStart, 1, -1 do
+                for i = index_start, 1, -1 do
                         print(lines[i])
                         if lines[i]:find(strStop, 1, true) then
                                 break

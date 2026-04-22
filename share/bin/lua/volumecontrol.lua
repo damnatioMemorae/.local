@@ -23,6 +23,12 @@ local function get(args)
         local status = grepWord(capture(cmd .. dev), { word = "Right:", count = 6 }) or
                    grepWord(capture(cmd .. dev), { word = "Right:", count = 6 })
 
+        if dev == "Master" then
+                dev = "Speaker"
+        elseif dev == "Capture" then
+                dev = "Mic"
+        end
+
         local msg
         if info == "status" then
                 msg = dev .. " " .. status
